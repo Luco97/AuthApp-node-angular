@@ -8,4 +8,5 @@ export interface AuthResponse {
 export interface Usuario {
     user_id?: string;
     name: string;
+    email?: string;
 }

@@ -19,6 +19,8 @@ export class AuthService {
 
   constructor(private http: HttpClient) { }
 
+
+  //Con pipe: map
   login( email: string, password: string ) {
     
     const url: string = `${this.baseUrl}/auth`;
@@ -37,9 +39,27 @@ export class AuthService {
                   }
                 }),
                 map(resp => resp.ok), // Transforma salidas
-                catchError(err => of(err.error)) //No existe, asi lo mando
+                catchError(err => of(err.error)) //No existe el usuario, asi lo mando para crear algo en el html que diga su ausencia
               );
               
+  }
+
+  //Sin pipe: map
+  register(name: string, email: string, password: string) {
+    const url: string = `${this.baseUrl}/auth/new`;
+    const body = {
+      name: name,
+      email: email,
+      password: password
+    }
+    return this.http.post<AuthResponse>(url,body)
+                  .pipe(
+                    catchError(err => of(err.error))
+                  );
+  }
+
+  logout() {
+    localStorage.removeItem('token');
   }
 
   validarToken() {
